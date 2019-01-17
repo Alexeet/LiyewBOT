@@ -40,6 +40,10 @@ class Bot(discord.Client):
             await self.send_message(message.channel, "Could not find user {}.".format(args[1]))
             return
         
+        if(user_to_kick.voice.voice_channel == None):
+            await self.send_message(message.channel, "User {} is not in a voice channel".format(args[1]))
+            return
+            
         if("-f" not in args[2:] and user_to_kick == message.author):
             await self.send_message(message.channel, "You can't kick yourself ! To bypass this restriction, use `-f` flag")
             return
