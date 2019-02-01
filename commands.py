@@ -4,7 +4,7 @@ class CommandHandler():
     def __init__(self, client):
         self.command_dict = dict()
         self.client = client
-        self.prefix = "./"
+        self.prefix = "&"
         return
     
     
@@ -57,9 +57,9 @@ class CommandHandler():
         splitted_msg = message.content.split()
         cmd_name = splitted_msg[0]
         cmd_name = cmd_name.replace(self.prefix, "", 1)
-        if(cmd_name not in self.command_dict.keys()):
+        if(cmd_name not in self.command_dict):
             await self.client.send_message(message.channel, "Unknown command `{}`".format(cmd_name))
-        
+            return
         #Command recognised
         module = self.command_dict[cmd_name]
         await module.call(cmd_name, splitted_msg[1:], message)
