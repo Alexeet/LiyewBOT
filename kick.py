@@ -30,7 +30,7 @@ class Kick:
             try:
                 await self.client.send_message(message.channel, "Missing permission : `create_channel`")
             except errors.Forbidden:
-                print("Not enough permission in server {}".format(message.server))
+                print("Insufficient permissions in server {}".format(message.server))
             return
                 
         try:
@@ -39,7 +39,7 @@ class Kick:
             try:
                 await self.client.send_message(message.channel, "Missing permission : `move_member`")
             except errors.Forbidden:
-                print("Not enough permission in server {}".format(message.server))
+                print("Insufficient permissions in server {}".format(message.server))
             return
             
         await self.client.delete_channel(newchan)
