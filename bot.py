@@ -18,6 +18,7 @@ class Bot(discord.Client):
 
     async def init(self):
         self.command_handler = commands.CommandHandler(self)
+        await self.command_handler.loadConfig()
         await self.command_handler.loadModulesFromConfig()
     
     async def list_members(self, username, server):
@@ -32,18 +33,25 @@ class Bot(discord.Client):
         
         return member_list
 
+
 def help():
     print("python bot.py {client token} [...]")
 
-
 if __name__ == "__main__":
+    token = ""
     if(len(sys.argv) <= 1):
-        help()
+        try:
+            with open("client.token") as token_f:
+                token = token_f.read().replace("\n","")
+        except:
+            help()
     else:
-        if len(sys.argv[1]) != 59:
-            print("[ERROR]: Invalid token\n[ERROR]: Client secret should be 59 characters long")
-        else:
-            client = Bot()
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(client.init())
-            client.run(sys.argv[1])
+        token = sys.argv[1]
+    
+    if(len(token) != 59):
+        print("Invalid client token !!")
+    
+    client = Bot()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(client.init())
+    client.run(token)

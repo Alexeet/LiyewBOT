@@ -1,10 +1,11 @@
 import importlib
+import json
 
 class CommandHandler():
     def __init__(self, client):
         self.command_dict = dict()
         self.client = client
-        self.prefix = "&"
+        self.config = dict()
         return
     
     
@@ -22,30 +23,18 @@ class CommandHandler():
             return
         
         print("Module {} loaded. Available commands :".format(module_name))
-        for i in module_class.command_list:
-            print("\t - {}".format(i))
-            self.command_dict[i] = module_class
+        for command in module_class.command_list:
+            print("\t - {}".format(command))
+            self.command_dict[command] = module_class
     
+    async def loadConfig(self, config_path="config.json"):
+        with open(config_path) as config_f:
+            self.config = json.loads(config_f.read())
+            self.prefix = self.config["prefix"]
 
-    async def loadModulesFromConfig(self, config_path="config.cfg"):
-        with open(config_path) as config:
-
-            #config.cfg parsing
-            line = "\n"
-            while(not line.startswith("modules:") and line != ""):
-                    line = config.readline()
-                    print(line)
-            
-            if(line == ""):
-                pass
-
-            modulelist = line[8:].split()
-            modulelist = filter(lambda x:x!="", modulelist)
-
-            #Import each module specified in config.cfg
-            for module in modulelist:
-                await self.importModule(module)
-            
+    async def loadModulesFromConfig(self):
+        for module_name in self.config["modules"]:
+            await self.importModule(module_name)
 
     async def processMessage(self, message):
         print("{0.author}@{0.server.name}/{0.channel.name}:{0.content}".format(message))

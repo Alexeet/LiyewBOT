@@ -1,0 +1,9 @@
+{
+    "modules":[
+        "kick",
+        "ping",
+        "dev",
+        "auto_username"
+    ],
+    "prefix":"./"
+}
