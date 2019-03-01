@@ -1,0 +1,4 @@
+.vscode/
+.python-version
+client.token
+__pycache__/
